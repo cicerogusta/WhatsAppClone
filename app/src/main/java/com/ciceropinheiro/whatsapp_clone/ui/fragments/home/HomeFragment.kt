@@ -1,5 +1,6 @@
 package com.ciceropinheiro.whatsapp_clone.ui.fragments.home
 
+import android.os.Bundle
 import android.view.*
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.ciceropinheiro.whatsapp_clone.R
@@ -16,7 +17,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override val viewModel: HomeViewModel by hiltNavGraphViewModels(R.id.nav_graph)
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupToolbar(binding.toolbar.toolbarHome)
+        setupViews()
 
+    }
+
+
+
+
+    private fun setupViews() {
+        val tabLayout = binding.tab
+        val viewPager = binding.pager
+        val adapter = TabViewPagerAdapter(this)
+        viewPager.adapter = adapter
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = getString(adapter.tabs[position])
+        }.attach()
+    }
 
 
 }
