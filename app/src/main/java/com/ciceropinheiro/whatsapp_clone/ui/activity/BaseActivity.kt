@@ -28,7 +28,7 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
     abstract fun getViewBinding(): VB
 
     protected fun setupToolbar(toolbar: Toolbar) {
-        toolbar.title = "WhatsApp"
+        toolbar.title = "Configurações"
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
