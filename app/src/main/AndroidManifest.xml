@@ -11,6 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsAppClone">
         <activity
+            android:name=".ui.activity.ConfiguracoesActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.activity.MainActivity"/>
+        <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
