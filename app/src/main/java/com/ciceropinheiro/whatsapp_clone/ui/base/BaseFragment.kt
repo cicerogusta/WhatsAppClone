@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.ciceropinheiro.whatsapp_clone.R
+import com.ciceropinheiro.whatsapp_clone.extensions.navigateTo
+import com.ciceropinheiro.whatsapp_clone.ui.fragments.home.HomeFragmentDirections
 
 abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
 
@@ -28,5 +32,26 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    protected fun setupToolbar(toolbar: Toolbar) {
+        toolbar.title = "WhatsApp"
+        setupMenuToolbar(toolbar)
+    }
+
+    private fun setupMenuToolbar(toolbar: Toolbar) {
+        toolbar.inflateMenu(R.menu.menu_main)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menuSair -> {
+                    navigateTo(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
+                }
+                R.id.menuConfig -> {
+                    navigateTo(HomeFragmentDirections.actionHomeFragmentToConfiguracoesActivity())
+                }
+            }
+            true
+
+        }
     }
 }
