@@ -1,10 +1,7 @@
 package com.ciceropinheiro.whatsapp_clone.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.widget.Toolbar
-import com.ciceropinheiro.whatsapp_clone.R
 import com.ciceropinheiro.whatsapp_clone.databinding.ActivityConfiguracoesBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,7 +14,7 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupToolbar(binding.toolbarConfig.toolbarHome)
+        setupToolbarActivity(binding.toolbarConfig.toolbarHome)
 
     }
 

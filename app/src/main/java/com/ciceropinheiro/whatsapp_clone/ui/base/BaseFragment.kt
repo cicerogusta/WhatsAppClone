@@ -34,24 +34,5 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
         _binding = null
     }
 
-    protected fun setupToolbar(toolbar: Toolbar) {
-        toolbar.title = "WhatsApp"
-        setupMenuToolbar(toolbar)
-    }
 
-    private fun setupMenuToolbar(toolbar: Toolbar) {
-        toolbar.inflateMenu(R.menu.menu_main)
-        toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.menuSair -> {
-                    navigateTo(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
-                }
-                R.id.menuConfig -> {
-                    navigateTo(HomeFragmentDirections.actionHomeFragmentToConfiguracoesActivity())
-                }
-            }
-            true
-
-        }
-    }
 }

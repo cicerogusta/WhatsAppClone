@@ -15,9 +15,7 @@ class ConfigActivity : BaseActivity<ConfigViewModel, ActivityConfigBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val toolbar = binding.toolbarConfig.toolbarHome
-        toolbar.title = "Configurações"
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setupToolbarActivity(toolbar)
 
     }
 
