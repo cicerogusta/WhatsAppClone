@@ -9,7 +9,7 @@ import com.ciceropinheiro.whatsapp_clone.ui.fragments.conversas.ConversasFragmen
 import com.ciceropinheiro.whatsapp_clone.ui.fragments.home.HomeFragment
 import com.ciceropinheiro.whatsapp_clone.ui.fragments.status.StatusFragment
 
-class TabViewPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) {
+class TabViewPagerAdapter(fa: HomeFragment) : FragmentStateAdapter(fa) {
     val tabs = arrayOf(R.string.conversas, R.string.status, R.string.chamadas)
     val fragments = arrayOf(ConversasFragment(),StatusFragment(), ChamadasFragment())
     override fun getItemCount(): Int = fragments.size

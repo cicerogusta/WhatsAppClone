@@ -31,7 +31,15 @@
         android:label="WhatsApp"
         tools:layout="@layout/fragment_home" >
         <action
-        android:id="@+id/action_homeFragment_to_loginFragment"
+            android:id="@+id/action_homeFragment_to_configActivity"
+            app:destination="@id/configActivity" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <activity
+        android:id="@+id/configActivity"
+        android:name="com.ciceropinheiro.whatsapp_clone.ui.activity.ConfigActivity"
+        android:label="activity_config"
+        tools:layout="@layout/activity_config" />
 </navigation>
