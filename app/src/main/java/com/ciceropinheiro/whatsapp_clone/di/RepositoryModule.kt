@@ -19,7 +19,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAutghRepository(
+    fun provideFirebaseRepository(
         auth: FirebaseAuth,
         database: FirebaseDatabase,
     ): FirebaseRepository {
