@@ -14,6 +14,7 @@ import com.ciceropinheiro.whatsapp_clone.databinding.FragmentRegisterBinding
 import com.ciceropinheiro.whatsapp_clone.ui.base.BaseFragment
 import com.ciceropinheiro.whatsapp_clone.ui.fragments.login.LoginFragmentDirections
 import com.ciceropinheiro.whatsapp_clone.util.UiState
+import com.ciceropinheiro.whatsapp_clone.util.codificarBase64
 import com.example.firebasewithmvvm.util.isValidEmail
 import com.example.firebasewithmvvm.util.toast
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,9 +40,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel
     private fun SignUpUser() {
         if (validation()) {
             val user = User()
-//            user.nome = binding.campoNome.text.toString()
+            user.nome = binding.campoNome.text.toString()
             user.email = binding.campoEmailRegistro.text.toString()
             user.senha = binding.campoSenhaRegistro.text.toString()
+            user.id = codificarBase64(user.email)
             viewModel.registerUser(user)
             observer()
 

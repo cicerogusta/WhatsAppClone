@@ -5,7 +5,10 @@ import kotlinx.parcelize.Parcelize
 
 data class User(
     var id: String = "",
+    var nome: String = "",
     var email: String = "",
     var senha: String = ""
 
-    )
+    ) {
+
+}

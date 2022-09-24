@@ -5,18 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import com.ciceropinheiro.whatsapp_clone.util.UiState
 import com.ciceropinheiro.whatsapp_clone.data.model.User
 import com.ciceropinheiro.whatsapp_clone.util.SharedPrefConstants
+import com.ciceropinheiro.whatsapp_clone.util.codificarBase64
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 
 class FirebaseRepositoryImp(
     val auth: FirebaseAuth,
-    val appPreferences: SharedPreferences,
-    val database: DatabaseReference
+    val database: FirebaseDatabase
 ) : FirebaseRepository {
 
     override fun loginUser(
@@ -56,6 +53,7 @@ class FirebaseRepositoryImp(
     override fun registerUser(user: User, result: (UiState<String>) -> Unit) {
         auth.createUserWithEmailAndPassword(user.email, user.senha).addOnCompleteListener {
             if (it.isSuccessful) {
+                database.reference.child("Usuarios").child(user.id).setValue(user)
                 result.invoke(UiState.Success("Registrado com Sucesso"))
             }
 
@@ -68,7 +66,7 @@ class FirebaseRepositoryImp(
 
     override fun getUserProfileInDatabase(liveData: MutableLiveData<User>) {
         val uid = auth.currentUser?.uid.toString()
-        database.child(uid).addValueEventListener(object : ValueEventListener {
+        database.reference.child(uid).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 liveData.postValue(snapshot.getValue(User::class.java))
             }
@@ -83,7 +81,7 @@ class FirebaseRepositoryImp(
         liveDataAllUsers: MutableLiveData<MutableList<User>>,
         liveDataProfile: MutableLiveData<User>
     ) {
-        database.addValueEventListener(object : ValueEventListener {
+        database.reference.addValueEventListener(object : ValueEventListener {
             val listUsuarios = mutableListOf<User>()
 
 

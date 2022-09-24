@@ -22,8 +22,8 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabaseReference(): DatabaseReference{
-        return FirebaseDatabase.getInstance().getReference("Users")
+    fun provideDatabaseReference(): FirebaseDatabase {
+        return FirebaseDatabase.getInstance()
     }
 
     @Provides

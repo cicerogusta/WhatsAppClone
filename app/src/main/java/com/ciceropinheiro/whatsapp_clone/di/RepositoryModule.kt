@@ -6,6 +6,7 @@ import com.ciceropinheiro.whatsapp_clone.data.repository.FirebaseRepositoryImp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,9 +21,8 @@ object RepositoryModule {
     @Singleton
     fun provideAutghRepository(
         auth: FirebaseAuth,
-        appPreferences: SharedPreferences,
-        database: DatabaseReference,
+        database: FirebaseDatabase,
     ): FirebaseRepository {
-        return FirebaseRepositoryImp(auth, appPreferences, database)
+        return FirebaseRepositoryImp(auth, database)
     }
 }
