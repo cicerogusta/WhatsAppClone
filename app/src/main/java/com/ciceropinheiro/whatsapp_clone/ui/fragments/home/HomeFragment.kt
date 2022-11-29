@@ -35,7 +35,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                     navigateTo(HomeFragmentDirections.actionHomeFragmentToLoginFragment())
                 }
                 R.id.menuConfig -> {
-                    navigateTo(HomeFragmentDirections.actionHomeFragmentToConfigActivity())
+                    navigateTo(HomeFragmentDirections.actionHomeFragmentToConfiguracoesActivity())
                 }
             }
             true

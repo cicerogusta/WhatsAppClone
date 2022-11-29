@@ -16,12 +16,6 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseDatabaseInstance(): FirebaseDatabase{
-        return FirebaseDatabase.getInstance()
-    }
-
-    @Provides
-    @Singleton
     fun provideDatabaseReference(): FirebaseDatabase {
         return FirebaseDatabase.getInstance()
     }
