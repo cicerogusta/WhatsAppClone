@@ -1,9 +1,12 @@
 package com.ciceropinheiro.whatsapp_clone.ui.activity
 
 import android.Manifest
+import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.ciceropinheiro.whatsapp_clone.databinding.ActivityConfiguracoesBinding
 import com.ciceropinheiro.whatsapp_clone.util.Permissao
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +29,33 @@ class ConfiguracoesActivity : BaseActivity<ConfigViewModel, ActivityConfiguracoe
         setupToolbarActivity(toolbar)
 
 
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        for (premissaoResultado in grantResults) {
+            if (premissaoResultado == PackageManager.PERMISSION_DENIED) {
+                alertaValidacaoPermissao()
+            }
+        }
+    }
+
+    private fun alertaValidacaoPermissao() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Permissões Negadas")
+        builder.setMessage("Para utilizar o app é necessário aceitar as permissões")
+        builder.setCancelable(false)
+        builder.setPositiveButton("Confirmar", DialogInterface.OnClickListener { dialogInterface, i ->
+            finish()
+        })
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
 }
