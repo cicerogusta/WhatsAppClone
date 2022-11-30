@@ -1,7 +1,5 @@
 package com.ciceropinheiro.whatsapp_clone.util
 
 
-object SharedPrefConstants {
-    val LOCAL_SHARED_PREF = "local_shared_pref"
-    val USER_SESSION = "user_session"
-}
+const val SELECA0_CAMERA = 100
+const val SELECA0_GALERIA = 200

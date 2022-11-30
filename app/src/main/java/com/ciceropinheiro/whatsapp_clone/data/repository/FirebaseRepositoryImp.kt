@@ -1,14 +1,13 @@
 package com.ciceropinheiro.whatsapp_clone.data.repository
 
-import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
-import com.ciceropinheiro.whatsapp_clone.util.UiState
 import com.ciceropinheiro.whatsapp_clone.data.model.User
-import com.ciceropinheiro.whatsapp_clone.util.SharedPrefConstants
-import com.ciceropinheiro.whatsapp_clone.util.codificarBase64
+import com.ciceropinheiro.whatsapp_clone.util.UiState
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class FirebaseRepositoryImp(
