@@ -1,18 +1,29 @@
 package com.ciceropinheiro.whatsapp_clone.data.repository
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.ciceropinheiro.whatsapp_clone.data.model.User
 import com.ciceropinheiro.whatsapp_clone.util.UiState
+import com.ciceropinheiro.whatsapp_clone.util.codificarBase64
+import com.ciceropinheiro.whatsapp_clone.util.retornaIdUsuario
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 
 class FirebaseRepositoryImp(
     val auth: FirebaseAuth,
-    val database: FirebaseDatabase
+    val database: FirebaseDatabase,
+    val storage: FirebaseStorage
 ) : FirebaseRepository {
 
     override fun loginUser(
@@ -52,12 +63,12 @@ class FirebaseRepositoryImp(
     override fun registerUser(user: User, result: (UiState<String>) -> Unit) {
         auth.createUserWithEmailAndPassword(user.email, user.senha).addOnCompleteListener {
             if (it.isSuccessful) {
-                database.reference.child("Usuarios").child(user.id).setValue(user)
+                database.reference.child("usuarios").setValue(user)
                 result.invoke(UiState.Success("Registrado com Sucesso"))
             }
 
         }.addOnFailureListener {
-            result.invoke(UiState.Success("Erro ao registrar!"))
+            result.invoke(UiState.Failure(it.toString()))
         }
 
 
@@ -108,6 +119,27 @@ class FirebaseRepositoryImp(
 
         }
         return isCurrentUser
+    }
+
+    override fun saveUserImage(imagem: Bitmap, context: Context) {
+        val baos = ByteArrayOutputStream()
+        val dadosImagem = baos.toByteArray()
+        imagem.compress(Bitmap.CompressFormat.JPEG, 70 ,baos )
+        val storageReference = storage.reference.child("imagens")
+            .child("perfil")
+            .child(auth.currentUser?.email?.retornaIdUsuario(auth).toString())
+            .child("perfil.jpeg")
+
+        val uploadTask = storageReference.putBytes(dadosImagem)
+
+        uploadTask.addOnFailureListener {
+            Log.e("erro", it.toString())
+
+        }.addOnSuccessListener {
+            Toast.makeText(context, "Sucesso ao colocar imagem", Toast.LENGTH_SHORT).show()
+
+
+        }
     }
 
 

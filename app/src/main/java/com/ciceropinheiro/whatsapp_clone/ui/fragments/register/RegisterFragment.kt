@@ -39,13 +39,15 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel
 
     private fun SignUpUser() {
         if (validation()) {
-            val user = User()
-            user.nome = binding.campoNome.text.toString()
-            user.email = binding.campoEmailRegistro.text.toString()
-            user.senha = binding.campoSenhaRegistro.text.toString()
-            user.id = codificarBase64(user.email)
-            viewModel.registerUser(user)
-            observer()
+            try {
+                val usuario = User(nome = binding.campoNome.text.toString(), email = binding.campoEmailRegistro.text.toString(), senha = binding.campoSenhaRegistro.text.toString())
+                val idUsuario = codificarBase64(usuario.email)
+                usuario.id = idUsuario
+                viewModel.registerUser(usuario)
+                observer()
+            }catch (e: Exception) {
+                e.printStackTrace()
+            }
 
         }
     }

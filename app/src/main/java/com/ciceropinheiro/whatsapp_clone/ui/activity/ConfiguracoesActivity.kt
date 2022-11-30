@@ -18,12 +18,12 @@ import com.ciceropinheiro.whatsapp_clone.util.SELECA0_GALERIA
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ConfiguracoesActivity : BaseActivity<ConfigViewModel, ActivityConfiguracoesBinding>() {
+class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, ActivityConfiguracoesBinding>() {
     private val permissoesNecessarias = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.CAMERA
     )
-    override val viewModel: ConfigViewModel by viewModels()
+    override val viewModel: ConfiguracoesActivityViewModel by viewModels()
 
 
     override fun getViewBinding(): ActivityConfiguracoesBinding = ActivityConfiguracoesBinding.inflate(layoutInflater)
@@ -76,6 +76,7 @@ class ConfiguracoesActivity : BaseActivity<ConfigViewModel, ActivityConfiguracoe
                 }
                 if (imagemBtm != null) {
                     binding.profileImage.setImageBitmap(imagemBtm)
+                    viewModel.salvarImagem(this, imagemBtm)
                 }
             }catch (e: Exception) {
                 e.printStackTrace()
