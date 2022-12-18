@@ -9,8 +9,12 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import com.bumptech.glide.Glide
+import com.ciceropinheiro.whatsapp_clone.R
 import com.ciceropinheiro.whatsapp_clone.databinding.ActivityConfiguracoesBinding
 import com.ciceropinheiro.whatsapp_clone.util.Permissao
 import com.ciceropinheiro.whatsapp_clone.util.SELECA0_CAMERA
@@ -23,6 +27,13 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.CAMERA
     )
+    private val register = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            viewModel.salvarImagem(this,uri)
+        } else {
+            // insert code for toast showing no media selected
+        }
+    }
     override val viewModel: ConfiguracoesActivityViewModel by viewModels()
 
 
@@ -33,13 +44,22 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
         super.onCreate(savedInstanceState)
         Permissao.validarPermissoes(permissoesNecessarias, this, 1)
         val toolbar = binding.toolbarConfig.toolbarHome
-        setupToolbarActivity(toolbar)
+//        setupToolbarActivity(toolbar)
+
+        val uri = viewModel.pegaPerfilUsuario(this)
+        if (uri !=null) {
+            Glide.with(this).load(uri.toString()).into(binding.profileImage)
+
+
+        } else {
+            binding.profileImage.setImageResource(R.drawable.padrao)
+            Toast.makeText(this, uri, Toast.LENGTH_SHORT).show()
+
+        }
 
         binding.ibcamera.setOnClickListener {
-            val i = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            if (i.resolveActivity(packageManager) != null) {
-                startActivityForResult(i, SELECA0_CAMERA)
-            }
+
+            register.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
         }
 
@@ -52,37 +72,6 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
         }
 
 
-    }
-
-    @Deprecated("Deprecated in Java",
-        ReplaceWith("super.onActivityResult(requestCode, resultCode, data)")
-    )
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == RESULT_OK) {
-            var imagemBtm: Bitmap? = null
-            try {
-                when(requestCode) {
-                    SELECA0_CAMERA -> {
-                        imagemBtm = data?.extras?.get("data") as Bitmap
-
-                    }
-                    SELECA0_GALERIA -> {
-                           val localImagemSelecionada = data?.data
-                        imagemBtm = MediaStore.Images.Media.getBitmap(contentResolver, localImagemSelecionada)
-
-                    }
-                }
-                if (imagemBtm != null) {
-                    binding.profileImage.setImageBitmap(imagemBtm)
-                    viewModel.salvarImagem(this, imagemBtm)
-                }
-            }catch (e: Exception) {
-                e.printStackTrace()
-
-            }
-        }
     }
 
     override fun onRequestPermissionsResult(

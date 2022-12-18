@@ -2,21 +2,20 @@ package com.ciceropinheiro.whatsapp_clone.data.repository
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.ciceropinheiro.whatsapp_clone.data.model.User
 import com.ciceropinheiro.whatsapp_clone.util.UiState
 import com.ciceropinheiro.whatsapp_clone.util.codificarBase64
-import com.ciceropinheiro.whatsapp_clone.util.retornaIdUsuario
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
 
@@ -26,12 +25,13 @@ class FirebaseRepositoryImp(
     val storage: FirebaseStorage
 ) : FirebaseRepository {
 
+
     override fun loginUser(
-       email: String,
-       senha: String,
+        email: String,
+        senha: String,
         result: (UiState<String>) -> Unit
     ) {
-        auth.signInWithEmailAndPassword(email,senha)
+        auth.signInWithEmailAndPassword(email, senha)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     result.invoke(UiState.Success("Logado com Sucesso"))
@@ -114,30 +114,73 @@ class FirebaseRepositoryImp(
     override fun isCurrentUser(): Boolean {
         var isCurrentUser = false
         val firebaseUser = auth.currentUser
-        if (firebaseUser !=null) {
+        if (firebaseUser != null) {
             isCurrentUser = true
 
         }
         return isCurrentUser
     }
 
-    override fun saveUserImage(imagem: Bitmap, context: Context) {
-        val baos = ByteArrayOutputStream()
-        val dadosImagem = baos.toByteArray()
-        imagem.compress(Bitmap.CompressFormat.JPEG, 70 ,baos )
-        val storageReference = storage.reference.child("imagens")
-            .child("perfil")
-            .child(auth.currentUser?.email?.retornaIdUsuario(auth).toString())
-            .child("perfil.jpeg")
+    override fun saveUserImage(imagem: Uri, context: Context) {
+        val storageReference =
+            storage.reference.child("imagens")
+                .child("perfil")
+                .child(getUserId()!! + ".jpeg")
+//                .child("$it.jpeg")
 
-        val uploadTask = storageReference.putBytes(dadosImagem)
 
+        val uploadTask = storageReference.putFile(imagem)
         uploadTask.addOnFailureListener {
-            Log.e("erro", it.toString())
+            Toast.makeText(context, "ERRO: $it", Toast.LENGTH_SHORT).show()
 
         }.addOnSuccessListener {
-            Toast.makeText(context, "Sucesso ao colocar imagem", Toast.LENGTH_SHORT).show()
+            storageReference.downloadUrl.addOnCompleteListener {
+                updateProfile(it.result)
+                Toast.makeText(context, "SUCESSO: ${it.result}", Toast.LENGTH_SHORT).show()
 
+
+
+            }
+        }
+
+    }
+
+    override fun getUserId(): String? {
+        return auth.currentUser?.email?.let { codificarBase64(it) }
+    }
+
+    override fun getUserProfilePhoto(context: Context): Uri? {
+
+        storage.reference.child("imagens").child("perfil").child(getUserId()!! + ".jpeg").downloadUrl.addOnSuccessListener {
+            updateProfile(it)
+            Toast.makeText(context, "SUCESSO", Toast.LENGTH_SHORT).show()
+
+
+        }.addOnFailureListener {
+            Toast.makeText(context, "ERRO :$it", Toast.LENGTH_SHORT).show()
+        }
+        return auth.currentUser?.photoUrl
+
+    }
+
+    override fun updateProfile(url: Uri): Boolean {
+
+        try {
+            val user = auth.currentUser
+            val profile = UserProfileChangeRequest.Builder().setPhotoUri(url).build()
+            user?.updateProfile(profile)?.addOnCompleteListener {
+                if(!it.isSuccessful){
+                    Log.d("Perfil", "Erro ao atualizar foto de perfil")
+
+                }
+
+            }
+
+            return true
+
+        }catch (e: Exception) {
+            e.printStackTrace()
+            return false
 
         }
     }
