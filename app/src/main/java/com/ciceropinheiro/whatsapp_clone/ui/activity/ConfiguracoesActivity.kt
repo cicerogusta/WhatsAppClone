@@ -56,15 +56,17 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
         Permissao.validarPermissoes(permissoesNecessarias, this, 1)
         val toolbar = binding.toolbarConfig.toolbarHome
         setupToolbarActivity(toolbar)
+        viewModel.pegaPerfilUsuario()
+        observer()
 
-        val uri = viewModel.pegaPerfilUsuario(this)
+        val uri = viewModel.pegaPerfilFotoUsuario(this)
         if (uri !=null) {
             Glide.with(this).load(uri.toString()).into(binding.profileImage)
 
 
         } else {
             binding.profileImage.setImageResource(R.drawable.padrao)
-            Toast.makeText(this, uri, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, uri, Toast.LENGTH_SHORT).show()
 
         }
 
@@ -79,6 +81,7 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
             gallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
         }
+
 
 
     }
@@ -108,6 +111,18 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
 
         val dialog = builder.create()
         dialog.show()
+    }
+
+    private fun observer() {
+        viewModel.register.observe(this) {
+            if (it !=null) {
+                binding.editTextTextPersonName.setText(it.nome)
+
+            } else {
+                Toast.makeText(this, "VAZIO", Toast.LENGTH_LONG).show()
+
+            }
+        }
     }
 
 }

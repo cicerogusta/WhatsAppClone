@@ -3,8 +3,10 @@ package com.ciceropinheiro.whatsapp_clone.ui.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.ciceropinheiro.whatsapp_clone.data.model.User
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivity() {

@@ -44,6 +44,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel
                 val idUsuario = codificarBase64(usuario.email)
                 usuario.id = idUsuario
                 viewModel.registerUser(usuario)
+
                 observer()
             }catch (e: Exception) {
                 e.printStackTrace()

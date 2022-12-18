@@ -75,8 +75,7 @@ class FirebaseRepositoryImp(
     }
 
     override fun getUserProfileInDatabase(liveData: MutableLiveData<User>) {
-        val uid = auth.currentUser?.uid.toString()
-        database.reference.child(uid).addValueEventListener(object : ValueEventListener {
+        database.reference.child("usuarios").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 liveData.postValue(snapshot.getValue(User::class.java))
             }
@@ -183,6 +182,7 @@ class FirebaseRepositoryImp(
         storage.reference.child("imagens").child("perfil").child(getUserId()!! + ".jpeg").downloadUrl.addOnSuccessListener {
             updateProfile(it)
             Toast.makeText(context, "SUCESSO", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "${auth.currentUser?.displayName}", Toast.LENGTH_SHORT).show()
 
 
         }.addOnFailureListener {
@@ -200,6 +200,7 @@ class FirebaseRepositoryImp(
             user?.updateProfile(profile)?.addOnCompleteListener {
                 if(!it.isSuccessful){
                     Log.d("Perfil", "Erro ao atualizar foto de perfil")
+                    Log.d("Nome", "Nome: ${user.displayName}")
 
                 }
 
@@ -212,6 +213,11 @@ class FirebaseRepositoryImp(
             return false
 
         }
+    }
+
+    override fun getNameUser() : String? {
+        return auth.currentUser?.displayName
+
     }
 
 
