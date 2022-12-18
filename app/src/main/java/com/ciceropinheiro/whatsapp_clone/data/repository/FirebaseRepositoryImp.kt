@@ -121,7 +121,7 @@ class FirebaseRepositoryImp(
         return isCurrentUser
     }
 
-    override fun saveUserImage(imagem: Uri, context: Context) {
+    override fun saveUserImageGalery(imagem: Uri, context: Context) {
         val storageReference =
             storage.reference.child("imagens")
                 .child("perfil")
@@ -130,6 +130,35 @@ class FirebaseRepositoryImp(
 
 
         val uploadTask = storageReference.putFile(imagem)
+        uploadTask.addOnFailureListener {
+            Toast.makeText(context, "ERRO: $it", Toast.LENGTH_SHORT).show()
+
+        }.addOnSuccessListener {
+            storageReference.downloadUrl.addOnCompleteListener {
+                updateProfile(it.result)
+                Toast.makeText(context, "SUCESSO: ${it.result}", Toast.LENGTH_SHORT).show()
+
+
+
+            }
+        }
+
+    }
+
+    override fun saveUserImageCamera(imagem: Bitmap, context: Context) {
+
+        //Recuperar dados da imagem para o firebase
+        val baos = ByteArrayOutputStream()
+        imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos)
+        val dadosImagem = baos.toByteArray()
+        val storageReference =
+            storage.reference.child("imagens")
+                .child("perfil")
+                .child(getUserId()!! + ".jpeg")
+//                .child("$it.jpeg")
+
+
+        val uploadTask = storageReference.putBytes(dadosImagem)
         uploadTask.addOnFailureListener {
             Toast.makeText(context, "ERRO: $it", Toast.LENGTH_SHORT).show()
 

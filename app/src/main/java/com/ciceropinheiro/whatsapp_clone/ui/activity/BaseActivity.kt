@@ -28,9 +28,9 @@ abstract class BaseActivity<VM : ViewModel, VB : ViewBinding> : AppCompatActivit
     abstract fun getViewBinding(): VB
 
     protected fun setupToolbarActivity(toolbar: Toolbar) {
-//        toolbar.title = "Configurações"
-//        setSupportActionBar(toolbar)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.title = "Configurações"
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 //        toolbar.windows
     }
 

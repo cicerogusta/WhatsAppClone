@@ -2,6 +2,7 @@ package com.ciceropinheiro.whatsapp_clone.ui.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,8 +18,6 @@ import com.bumptech.glide.Glide
 import com.ciceropinheiro.whatsapp_clone.R
 import com.ciceropinheiro.whatsapp_clone.databinding.ActivityConfiguracoesBinding
 import com.ciceropinheiro.whatsapp_clone.util.Permissao
-import com.ciceropinheiro.whatsapp_clone.util.SELECA0_CAMERA
-import com.ciceropinheiro.whatsapp_clone.util.SELECA0_GALERIA
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,13 +26,25 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.CAMERA
     )
-    private val register = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+    private val gallery = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
-            viewModel.salvarImagem(this,uri)
+            viewModel.salvarImagemGaleria(this,uri)
         } else {
-            // insert code for toast showing no media selected
+
+            binding.profileImage.setImageResource(R.drawable.padrao)
         }
     }
+
+
+    private val camera =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                if (result?.data != null) {
+                    val bitmap = result.data?.extras?.get("data") as Bitmap
+                    viewModel.salvarImagemCamera(this, bitmap)
+                }
+            }
+        }
     override val viewModel: ConfiguracoesActivityViewModel by viewModels()
 
 
@@ -44,7 +55,7 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
         super.onCreate(savedInstanceState)
         Permissao.validarPermissoes(permissoesNecessarias, this, 1)
         val toolbar = binding.toolbarConfig.toolbarHome
-//        setupToolbarActivity(toolbar)
+        setupToolbarActivity(toolbar)
 
         val uri = viewModel.pegaPerfilUsuario(this)
         if (uri !=null) {
@@ -58,16 +69,14 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
         }
 
         binding.ibcamera.setOnClickListener {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            camera.launch(cameraIntent)
 
-            register.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
         }
 
         binding.ibgaleria.setOnClickListener {
-            val i = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            if (i.resolveActivity(packageManager) != null) {
-                startActivityForResult(i, SELECA0_GALERIA)
-            }
+            gallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
         }
 
