@@ -40,7 +40,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding, RegisterViewModel
     private fun SignUpUser() {
         if (validation()) {
             try {
-                val usuario = User(nome = binding.campoNome.text.toString(), email = binding.campoEmailRegistro.text.toString(), senha = binding.campoSenhaRegistro.text.toString())
+                val usuario = User(nome = binding.campoNome.text.toString(), email = binding.campoEmailRegistro.text.toString(), senha = binding.campoSenhaRegistro.text.toString(), foto = null)
                 val idUsuario = codificarBase64(usuario.email)
                 usuario.id = idUsuario
                 viewModel.registerUser(usuario)

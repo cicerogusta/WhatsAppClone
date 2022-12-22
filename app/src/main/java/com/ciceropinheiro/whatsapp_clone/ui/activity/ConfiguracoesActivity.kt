@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
@@ -16,12 +17,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.ciceropinheiro.whatsapp_clone.R
+import com.ciceropinheiro.whatsapp_clone.data.model.User
 import com.ciceropinheiro.whatsapp_clone.databinding.ActivityConfiguracoesBinding
 import com.ciceropinheiro.whatsapp_clone.util.Permissao
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, ActivityConfiguracoesBinding>() {
+    private var uri: Uri? = null
     private val permissoesNecessarias = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.CAMERA
@@ -45,6 +48,8 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
                 }
             }
         }
+
+    private var user : User = User()
     override val viewModel: ConfiguracoesActivityViewModel by viewModels()
 
 
@@ -54,12 +59,12 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Permissao.validarPermissoes(permissoesNecessarias, this, 1)
+        observer()
         val toolbar = binding.toolbarConfig.toolbarHome
         setupToolbarActivity(toolbar)
         viewModel.pegaPerfilUsuario()
-        observer()
 
-        val uri = viewModel.pegaPerfilFotoUsuario(this)
+         uri = viewModel.pegaPerfilFotoUsuario(this)
         if (uri !=null) {
             Glide.with(this).load(uri.toString()).into(binding.profileImage)
 
@@ -80,6 +85,14 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
         binding.ibgaleria.setOnClickListener {
             gallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
 
+        }
+
+//        binding.imageView3.isClickable = true
+        binding.imageView3.setOnClickListener {
+            user.nome = binding.editTextTextPersonName.text.toString()
+            user.foto = uri
+
+            viewModel.atualizarUsuario(user)
         }
 
 
@@ -116,6 +129,7 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
     private fun observer() {
         viewModel.register.observe(this) {
             if (it !=null) {
+                 user = it
                 binding.editTextTextPersonName.setText(it.nome)
 
             } else {

@@ -220,5 +220,9 @@ class FirebaseRepositoryImp(
 
     }
 
+    override fun updateUser(user: User) {
+        database.reference.child("usuarios").updateChildren(user.map())
+    }
+
 
 }

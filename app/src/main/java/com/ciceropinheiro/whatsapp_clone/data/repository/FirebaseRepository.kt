@@ -23,4 +23,5 @@ interface FirebaseRepository {
     fun getUserProfilePhoto(context: Context): Uri?
     fun saveUserImageCamera(imagem: Bitmap, context: Context)
     fun getNameUser(): String?
+    fun updateUser(user: User)
 }

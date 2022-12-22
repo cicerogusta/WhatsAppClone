@@ -37,4 +37,8 @@ class ConfiguracoesActivityViewModel @Inject constructor(private val repository:
          repository.getUserProfileInDatabase(_user)
     }
 
+    fun atualizarUsuario(user: User) {
+        repository.updateUser(user)
+    }
+
 }
