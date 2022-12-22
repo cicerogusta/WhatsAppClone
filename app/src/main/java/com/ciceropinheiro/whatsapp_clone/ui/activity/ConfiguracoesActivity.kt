@@ -32,6 +32,7 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
     private val gallery = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) {
             viewModel.salvarImagemGaleria(this,uri)
+            binding.profileImage.setImageURI(uri)
         } else {
 
             binding.profileImage.setImageResource(R.drawable.padrao)
@@ -45,6 +46,7 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
                 if (result?.data != null) {
                     val bitmap = result.data?.extras?.get("data") as Bitmap
                     viewModel.salvarImagemCamera(this, bitmap)
+                    binding.profileImage.setImageBitmap(bitmap)
                 }
             }
         }
