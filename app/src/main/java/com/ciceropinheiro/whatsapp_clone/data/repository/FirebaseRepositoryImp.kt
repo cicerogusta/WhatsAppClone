@@ -96,7 +96,13 @@ class FirebaseRepositoryImp(
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for (users in snapshot.children) {
-                    users.getValue(User::class.java)?.let { listUsuarios.add(it) }
+                    val user = users.getValue(User::class.java)
+                    if (user?.email != auth.currentUser?.email) {
+                        if (user != null) {
+                            listUsuarios.add(user)
+                        }
+                    }
+
 
                 }
                 liveData.value = listUsuarios
