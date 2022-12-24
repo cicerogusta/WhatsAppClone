@@ -63,7 +63,7 @@ class FirebaseRepositoryImp(
     override fun registerUser(user: User, result: (UiState<String>) -> Unit) {
         auth.createUserWithEmailAndPassword(user.email, user.senha).addOnCompleteListener {
             if (it.isSuccessful) {
-                database.reference.child("usuarios").setValue(user)
+                database.reference.child("usuarios").child(getUserId()!!).setValue(user)
                 result.invoke(UiState.Success("Registrado com Sucesso"))
             }
 
@@ -75,7 +75,7 @@ class FirebaseRepositoryImp(
     }
 
     override fun getUserProfileInDatabase(liveData: MutableLiveData<User>) {
-        database.reference.child("usuarios").addValueEventListener(object : ValueEventListener {
+        database.reference.child("usuarios").child(getUserId()!!).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 liveData.postValue(snapshot.getValue(User::class.java))
             }
@@ -87,10 +87,9 @@ class FirebaseRepositoryImp(
     }
 
     override fun getAllUsers(
-        liveDataAllUsers: MutableLiveData<MutableList<User>>,
-        liveDataProfile: MutableLiveData<User>
+        liveData: MutableLiveData<MutableList<User>>
     ) {
-        database.reference.addValueEventListener(object : ValueEventListener {
+        database.reference.child("usuarios").addValueEventListener(object : ValueEventListener {
             val listUsuarios = mutableListOf<User>()
 
 
@@ -100,7 +99,7 @@ class FirebaseRepositoryImp(
                     users.getValue(User::class.java)?.let { listUsuarios.add(it) }
 
                 }
-                liveDataAllUsers.value = listUsuarios
+                liveData.value = listUsuarios
 
             }
 
@@ -221,7 +220,7 @@ class FirebaseRepositoryImp(
     }
 
     override fun updateUser(user: User) {
-        database.reference.child("usuarios").updateChildren(user.map())
+        database.reference.child("usuarios").child(getUserId()!!).updateChildren(user.map())
     }
 
 

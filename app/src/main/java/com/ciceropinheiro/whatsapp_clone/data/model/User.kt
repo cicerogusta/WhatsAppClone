@@ -9,7 +9,7 @@ data class User(
     var nome: String = "",
     var email: String = "",
     var senha: String = "",
-    var foto: Uri? = null
+    var foto: String? = null
 
     ) {
 

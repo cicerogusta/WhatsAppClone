@@ -24,6 +24,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         setupMenuToolbar(binding.toolbarConfig.toolbarHome)
         binding.toolbarConfig.toolbarHome.title = "WhatsApp"
         setupViews()
+        binding.floatingActionButton4.setOnClickListener {
+            navigateTo(HomeFragmentDirections.actionHomeFragmentToContatosFragment())
+        }
     }
 
     private fun setupMenuToolbar(toolbar: Toolbar) {

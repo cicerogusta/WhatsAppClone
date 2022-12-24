@@ -39,10 +39,18 @@
         <action
             android:id="@+id/action_homeFragment_to_configuracoesActivity"
             app:destination="@id/configuracoesActivity" />
+        <action
+            android:id="@+id/action_homeFragment_to_contatosFragment"
+            app:destination="@id/contatosFragment" />
     </fragment>
     <activity
         android:id="@+id/configuracoesActivity"
         android:name="com.ciceropinheiro.whatsapp_clone.ui.activity.ConfiguracoesActivity"
         android:label="activity_configuracoes"
         tools:layout="@layout/activity_configuracoes" />
+    <fragment
+        android:id="@+id/contatosFragment"
+        android:name="com.ciceropinheiro.whatsapp_clone.ContatosFragment"
+        android:label="fragment_contatos"
+        tools:layout="@layout/fragment_contatos" />
 </navigation>

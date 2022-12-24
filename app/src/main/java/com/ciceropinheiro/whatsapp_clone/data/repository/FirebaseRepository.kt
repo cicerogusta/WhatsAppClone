@@ -13,7 +13,7 @@ interface FirebaseRepository {
     fun logout()
     fun registerUser(user: User, result: (UiState<String>) -> Unit)
     fun getUserProfileInDatabase(liveData: MutableLiveData<User>)
-    fun getAllUsers(liveData: MutableLiveData<MutableList<User>>, liveDataProfile: MutableLiveData<User>)
+    fun getAllUsers(liveData: MutableLiveData<MutableList<User>>)
     fun isCurrentUser() : Boolean
     fun saveUserImageGalery(imagem: Uri, context: Context)
     fun getUserId(): String?
