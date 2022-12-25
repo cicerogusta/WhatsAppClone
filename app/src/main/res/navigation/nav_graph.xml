@@ -51,6 +51,6 @@
     <fragment
         android:id="@+id/contatosFragment"
         android:name="com.ciceropinheiro.whatsapp_clone.ContatosFragment"
-        android:label="fragment_contatos"
+        android:label="Contatos"
         tools:layout="@layout/fragment_contatos" />
 </navigation>
