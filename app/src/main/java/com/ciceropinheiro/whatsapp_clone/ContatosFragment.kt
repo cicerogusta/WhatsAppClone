@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -14,7 +15,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ciceropinheiro.whatsapp_clone.adapter.ContatosAdapter
+import com.ciceropinheiro.whatsapp_clone.adapter.RecyclerItemClickListener
 import com.ciceropinheiro.whatsapp_clone.adapter.TabViewPagerAdapter
+import com.ciceropinheiro.whatsapp_clone.data.model.User
 import com.ciceropinheiro.whatsapp_clone.databinding.FragmentContatosBinding
 import com.ciceropinheiro.whatsapp_clone.databinding.FragmentHomeBinding
 import com.ciceropinheiro.whatsapp_clone.extensions.navigateTo
@@ -39,15 +42,40 @@ class ContatosFragment : BaseFragment<FragmentContatosBinding, ContatosViewModel
         setUpToolbar()
         viewModel.retornaContatos()
         observer()
+
     }
     private fun observer() {
         viewModel.users.observe(viewLifecycleOwner) {
-            binding.rvContatos.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = ContatosAdapter(it, requireContext())
-            }
+            configurarRecyclerView(it)
         }
     }
+
+    private fun configurarRecyclerView(it: MutableList<User>) {
+        binding.rvContatos.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = ContatosAdapter(it, requireContext())
+        }
+        binding.rvContatos.addOnItemTouchListener(RecyclerItemClickListener(activity, binding.rvContatos, object : RecyclerItemClickListener.OnItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                navigateTo(ContatosFragmentDirections.actionContatosFragmentToChatFragment())
+            }
+
+            override fun onItemClick(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+
+            }
+
+            override fun onLongItemClick(view: View?, position: Int) {
+
+            }
+
+        }))
+    }
+
 
     private fun setUpToolbar() {
 
@@ -63,8 +91,7 @@ class ContatosFragment : BaseFragment<FragmentContatosBinding, ContatosViewModel
         super.onAttach(context)
         activity?.let { mActivity = it }
     }
-
-
-
-
 }
+
+
+
