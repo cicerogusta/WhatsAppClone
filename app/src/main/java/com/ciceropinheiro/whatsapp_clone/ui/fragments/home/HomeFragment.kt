@@ -6,6 +6,7 @@ import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.ciceropinheiro.whatsapp_clone.R
@@ -27,8 +28,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        setupMenuToolbar(binding.toolbarConfig.toolbarHome)
-        setUpToolbar()
+
+        binding.toolbarConfig.toolbarHome.title ="WhatsApp"
+        setupMenuToolbar(binding.toolbarConfig.toolbarHome)
+//        setUpToolbar()
         setupViews()
         binding.floatingActionButton4.setOnClickListener {
             navigateTo(HomeFragmentDirections.actionHomeFragmentToContatosFragment())
@@ -65,20 +68,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity?.let { mActivity = it }
-    }
-
-    private fun setUpToolbar() {
-
-        binding.toolbarConfig.toolbarHome.title = "WhatsApp"
-
-
-        val mainActivity = mActivity as MainActivity
-
-        mainActivity.setSupportActionBar(binding.toolbarConfig.toolbarHome)
-        val navController = NavHostFragment.findNavController(this)
-        val appBarConfiguration = mainActivity.appBarConfiguration
-        NavigationUI.setupWithNavController(binding.toolbarConfig.toolbarHome, navController, appBarConfiguration)
-
     }
 
 
