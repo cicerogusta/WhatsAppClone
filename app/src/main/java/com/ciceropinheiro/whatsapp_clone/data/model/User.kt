@@ -11,7 +11,7 @@ data class User(
     var senha: String = "",
     var foto: String? = null
 
-    ) {
+    ): java.io.Serializable {
 
     fun map(): Map<String, Any> {
         val userMap = HashMap<String, Any>()

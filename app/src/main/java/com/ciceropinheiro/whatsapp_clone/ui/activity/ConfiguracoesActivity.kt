@@ -91,10 +91,9 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
 
 //        binding.imageView3.isClickable = true
         binding.imageView3.setOnClickListener {
-            user.nome = binding.editTextTextPersonName.text.toString()
-            user.foto = uri.toString()
+            val userUpdated = User(user.id, binding.editTextTextPersonName.text.toString(), user.email, user.senha, uri.toString())
 
-            viewModel.atualizarUsuario(user)
+            viewModel.atualizarUsuario(userUpdated)
         }
 
 

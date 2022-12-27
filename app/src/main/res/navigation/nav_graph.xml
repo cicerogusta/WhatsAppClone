@@ -56,9 +56,18 @@
         <action
             android:id="@+id/action_contatosFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.ciceropinheiro.whatsapp_clone.ui.fragments.chat.ChatFragment"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat">
+
+        <argument
+            android:name="User"
+            app:argType="com.ciceropinheiro.whatsapp_clone.data.model.User" />
+
+    </fragment>
+
+
 </navigation>

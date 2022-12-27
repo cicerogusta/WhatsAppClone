@@ -57,7 +57,7 @@ class ContatosFragment : BaseFragment<FragmentContatosBinding, ContatosViewModel
         }
         binding.rvContatos.addOnItemTouchListener(RecyclerItemClickListener(activity, binding.rvContatos, object : RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
-                navigateTo(ContatosFragmentDirections.actionContatosFragmentToChatFragment())
+                navigateTo(ContatosFragmentDirections.actionContatosFragmentToChatFragment(it[position]))
             }
 
             override fun onItemClick(

@@ -9,17 +9,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import com.bumptech.glide.Glide
 import com.ciceropinheiro.whatsapp_clone.R
 import com.ciceropinheiro.whatsapp_clone.databinding.FragmentChatBinding
 import com.ciceropinheiro.whatsapp_clone.ui.activity.MainActivity
 import com.ciceropinheiro.whatsapp_clone.ui.base.BaseFragment
+import com.example.firebasewithmvvm.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 
 class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() {
     override val viewModel: ChatFragmentViewModel by hiltNavGraphViewModels(R.id.nav_graph)
     lateinit var mActivity: FragmentActivity
+    private val args : ChatFragmentArgs by navArgs()
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -30,6 +34,15 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() 
         super.onViewCreated(view, savedInstanceState)
         activity?.let { mActivity = it }
         setUpToolbar()
+        if (!args.user.equals(null)) binding.user = args.user
+        if (!args.user.foto.equals(null)) {
+
+            Glide.with(this).load(args.user.foto).into(binding.circleIv)
+        } else {
+            binding.circleIv.setImageResource(R.drawable.padrao)
+            toast(args.user.toString())
+        }
+
     }
 
     private fun setUpToolbar() {
@@ -41,11 +54,6 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() 
         mainActivity.setSupportActionBar(binding.toolbar)
         val navController = NavHostFragment.findNavController(this)
         NavigationUI.setupActionBarWithNavController(mainActivity,navController)
-
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
 
     }
 }
