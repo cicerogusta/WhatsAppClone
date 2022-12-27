@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
+import com.ciceropinheiro.whatsapp_clone.data.model.Mensagem
 import com.ciceropinheiro.whatsapp_clone.data.model.User
 import com.ciceropinheiro.whatsapp_clone.util.UiState
 
@@ -17,6 +18,7 @@ interface FirebaseRepository {
     fun isCurrentUser() : Boolean
     fun saveUserImageGalery(imagem: Uri, context: Context)
     fun getUserId(): String?
+    fun sentMessage(idRemetente: String, idDestinatario: String, msg: Mensagem)
 
 
     fun updateProfile(url: Uri): Boolean

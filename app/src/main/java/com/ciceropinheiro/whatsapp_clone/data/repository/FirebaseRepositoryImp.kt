@@ -6,6 +6,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.ciceropinheiro.whatsapp_clone.data.model.Mensagem
 import com.ciceropinheiro.whatsapp_clone.data.model.User
 import com.ciceropinheiro.whatsapp_clone.util.UiState
 import com.ciceropinheiro.whatsapp_clone.util.codificarBase64
@@ -180,6 +181,10 @@ class FirebaseRepositoryImp(
 
     override fun getUserId(): String? {
         return auth.currentUser?.email?.let { codificarBase64(it) }
+    }
+
+    override fun sentMessage(idRemetente: String, idDestinatario: String, msg: Mensagem) {
+        database.reference.child("mensagens").child(idRemetente).child(idDestinatario).push().setValue(msg)
     }
 
     override fun getUserProfilePhoto(context: Context): Uri? {

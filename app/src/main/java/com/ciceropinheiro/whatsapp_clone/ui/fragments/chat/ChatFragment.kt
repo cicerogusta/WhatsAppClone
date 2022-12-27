@@ -13,9 +13,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import com.bumptech.glide.Glide
 import com.ciceropinheiro.whatsapp_clone.R
+import com.ciceropinheiro.whatsapp_clone.data.model.Mensagem
 import com.ciceropinheiro.whatsapp_clone.databinding.FragmentChatBinding
 import com.ciceropinheiro.whatsapp_clone.ui.activity.MainActivity
 import com.ciceropinheiro.whatsapp_clone.ui.base.BaseFragment
+import com.ciceropinheiro.whatsapp_clone.util.codificarBase64
 import com.example.firebasewithmvvm.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,6 +43,18 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() 
         } else {
             binding.circleIv.setImageResource(R.drawable.padrao)
             toast(args.user.toString())
+        }
+
+        binding.floatingActionButton2.setOnClickListener {
+            if (binding.editTextTextPersonName2.text.toString().isNotEmpty()) {
+                val mensagem = Mensagem()
+                mensagem.idUsuario = viewModel.retornaIdRemetente()
+                    ?.let { it1 -> codificarBase64(it1) }
+                mensagem.mensagem = binding.editTextTextPersonName2.text.toString()
+                viewModel.enviaMensagem(viewModel.retornaIdRemetente()!!, codificarBase64(args.user.email), mensagem )
+                binding.editTextTextPersonName2.setText("")
+            }
+
         }
 
     }
