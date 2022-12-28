@@ -55,6 +55,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() 
                 mensagem.idUsuario = viewModel.retornaIdRemetente()
                 mensagem.mensagem = binding.editTextTextPersonName2.text.toString()
                 viewModel.enviaMensagem(viewModel.retornaIdRemetente()!!, codificarBase64(args.user.email), mensagem)
+                viewModel.enviaMensagem(codificarBase64(args.user.email ),viewModel.retornaIdRemetente()!!, mensagem)
                 binding.editTextTextPersonName2.setText("")
 
             }
