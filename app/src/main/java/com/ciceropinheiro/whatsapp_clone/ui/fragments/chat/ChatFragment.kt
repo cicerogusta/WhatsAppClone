@@ -28,6 +28,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() 
     override val viewModel: ChatFragmentViewModel by hiltNavGraphViewModels(R.id.nav_graph)
     lateinit var mActivity: FragmentActivity
     private val args : ChatFragmentArgs by navArgs()
+    private var listaMensagens = mutableListOf<Mensagem>()
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -37,6 +38,8 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let { mActivity = it }
+        viewModel.retornaMensagem(viewModel.retornaIdRemetente()!!, codificarBase64(args.user.email))
+        observer()
         setUpToolbar()
         if (!args.user.equals(null)) binding.user = args.user
         if (!args.user.foto.equals(null)) {
@@ -44,29 +47,38 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() 
             Glide.with(this).load(args.user.foto).into(binding.circleIv)
         } else {
             binding.circleIv.setImageResource(R.drawable.padrao)
-            toast(args.user.toString())
         }
 
         binding.floatingActionButton2.setOnClickListener {
             if (binding.editTextTextPersonName2.text.toString().isNotEmpty()) {
                 val mensagem = Mensagem()
                 mensagem.idUsuario = viewModel.retornaIdRemetente()
-                    ?.let { it1 -> codificarBase64(it1) }
                 mensagem.mensagem = binding.editTextTextPersonName2.text.toString()
-                viewModel.enviaMensagem(viewModel.retornaIdRemetente()!!, codificarBase64(args.user.email), mensagem )
+                viewModel.enviaMensagem(viewModel.retornaIdRemetente()!!, codificarBase64(args.user.email), mensagem)
                 binding.editTextTextPersonName2.setText("")
+
             }
 
         }
 
     }
 
+    private fun observer() {
+        viewModel.mensagens.observe(viewLifecycleOwner) {
+            it.forEach { mensagem ->
+                listaMensagens.add(mensagem)
+            }
+            configuraRecyclerView()
+        }
+    }
+
     private fun configuraRecyclerView() {
-        val listaMensagens = mutableListOf<Mensagem>()
         binding.chatRecyclerview.apply {
             layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
-            adapter = ChatAdapter(listaMensagens, requireContext())
+            adapter =
+                ChatAdapter(listaMensagens, requireContext(), viewModel.retornaIdRemetente()!!)
+            this.adapter?.notifyDataSetChanged()
 
         }
     }
@@ -80,6 +92,13 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() 
         mainActivity.setSupportActionBar(binding.toolbar)
         val navController = NavHostFragment.findNavController(this)
         NavigationUI.setupActionBarWithNavController(mainActivity,navController)
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        configuraRecyclerView()
+
 
     }
 }

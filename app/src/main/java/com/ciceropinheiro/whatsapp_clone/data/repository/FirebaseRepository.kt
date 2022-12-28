@@ -19,6 +19,7 @@ interface FirebaseRepository {
     fun saveUserImageGalery(imagem: Uri, context: Context)
     fun getUserId(): String?
     fun sentMessage(idRemetente: String, idDestinatario: String, msg: Mensagem)
+    fun getMessage(idRemetente: String, idDestinatario: String,livedata:MutableLiveData<MutableList<Mensagem>>)
 
 
     fun updateProfile(url: Uri): Boolean

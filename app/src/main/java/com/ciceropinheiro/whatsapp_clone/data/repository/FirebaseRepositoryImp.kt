@@ -12,6 +12,7 @@ import com.ciceropinheiro.whatsapp_clone.util.UiState
 import com.ciceropinheiro.whatsapp_clone.util.codificarBase64
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -185,6 +186,38 @@ class FirebaseRepositoryImp(
 
     override fun sentMessage(idRemetente: String, idDestinatario: String, msg: Mensagem) {
         database.reference.child("mensagens").child(idRemetente).child(idDestinatario).push().setValue(msg)
+    }
+
+    override fun getMessage(idRemetente: String, idDestinatario: String, livedata: MutableLiveData<MutableList<Mensagem>>) {
+        database.reference.child("mensagens").child(idRemetente).child(idDestinatario).addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val mensagem = snapshot.getValue(Mensagem::class.java)
+                val listaMensagem = mutableListOf<Mensagem>()
+                if (mensagem != null) {
+                    listaMensagem.add(mensagem)
+                    livedata.value = listaMensagem
+                }
+
+
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     override fun getUserProfilePhoto(context: Context): Uri? {
