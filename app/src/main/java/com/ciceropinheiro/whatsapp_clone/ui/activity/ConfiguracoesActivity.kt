@@ -94,6 +94,7 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
             val userUpdated = User(user.id, binding.editTextTextPersonName.text.toString(), user.email, user.senha, uri.toString())
 
             viewModel.atualizarUsuario(userUpdated)
+
         }
 
 
@@ -130,8 +131,9 @@ class ConfiguracoesActivity : BaseActivity<ConfiguracoesActivityViewModel, Activ
     private fun observer() {
         viewModel.register.observe(this) {
             if (it !=null) {
-                 user = it
-                binding.editTextTextPersonName.setText(it.nome)
+
+                user = it
+                binding.editTextTextPersonName.setText(user.nome)
 
             } else {
                 Toast.makeText(this, "VAZIO", Toast.LENGTH_LONG).show()

@@ -26,7 +26,7 @@ class ContatosAdapter(
 
         val contato = listaContatos[position]
         holder.binding.contato = contato
-        if (contato.foto !=null) {
+        if (contato.foto !=null && !contato.foto.equals("null")) {
             Glide.with(context).load(Uri.parse(contato.foto)).into(holder.binding.profileImage)
         } else {
             holder.binding.profileImage.setImageResource(R.drawable.padrao)
