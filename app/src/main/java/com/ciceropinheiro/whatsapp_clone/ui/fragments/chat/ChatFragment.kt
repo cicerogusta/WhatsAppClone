@@ -11,8 +11,10 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.ciceropinheiro.whatsapp_clone.R
+import com.ciceropinheiro.whatsapp_clone.adapter.ChatAdapter
 import com.ciceropinheiro.whatsapp_clone.data.model.Mensagem
 import com.ciceropinheiro.whatsapp_clone.databinding.FragmentChatBinding
 import com.ciceropinheiro.whatsapp_clone.ui.activity.MainActivity
@@ -57,6 +59,16 @@ class ChatFragment : BaseFragment<FragmentChatBinding, ChatFragmentViewModel>() 
 
         }
 
+    }
+
+    private fun configuraRecyclerView() {
+        val listaMensagens = mutableListOf<Mensagem>()
+        binding.chatRecyclerview.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            setHasFixedSize(true)
+            adapter = ChatAdapter(listaMensagens, requireContext())
+
+        }
     }
 
     private fun setUpToolbar() {
