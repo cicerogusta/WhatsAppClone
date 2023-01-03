@@ -27,3 +27,15 @@ CHAT
 <img src="https://user-images.githubusercontent.com/76134992/210416887-719782c6-7252-45be-a9f1-e5553d30c53e.jpg" width="700px" />
 </div>
 
+
+# Linguagem de Programação
+<h1>Kotlin</h1>
+<h3>O app WhatsApp Clone utiliza como base a linguagem Kotlin</h3>
+
+# Banco de Dados
+<h1>Firebase</h1>
+<h3>Com o firebase o app utiliza as funções Storage para imagens, Realtime Database para guardar os dados e Authentication para cadastro e login de usuários</h3>
+
+# Arquitetura de Projeto
+<h1>MVVM</h1>
+<h3>A arquitetura do projeto é MVVM para melhor gerenciar as questões de ciclor de vida das activities e fragments</h3>
