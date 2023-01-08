@@ -1,31 +1,29 @@
-# WhatsAppClone
+<h1 align="center">
+  Whatsapp Clone - Cícero Pinheiro
+</h1>
+
 Projeto criado para fins de colocar algumas habilidades em prática.
 
 # Versão 1.0 (EM DESENVOLVIMENTO) 
 
 Em seu estado atual o usuário pode criar sua conta, logar, enviar e receber mensagens de outros usuários, também é possível editar nome e foto de perfil.
 
-# TELAS DO APP
+### Features
+- [x] Mensagens entre dispositivos
+- [x] Firebase Auth
+- [x] Registro de contatos no servidor
+- [x] Camera e Galeria de fotos
+- [x] Tela de Perfil
+- [x] Contatos
+- [x] Envio e Recebimento de mensagens
 
-PRINCIPAL
-<div align="center">
-<img src="https://user-images.githubusercontent.com/76134992/210416891-9668fbca-2bdf-4768-a3ee-644deea4ca8c.jpg" width="700px" />
-</div>
+### Links úteis para referencia de coisas que contém na aplicação
+- MVVM ([docs](https://developer.android.com/jetpack/guide))
+- Kotlin Coroutine ([docs](https://kotlinlang.org/docs/reference/coroutines-overview.html))
+- Firebase Auth ([docs](https://firebase.google.com/docs/auth/android/google-signin))
+- Firebase Database ([docs](https://firebase.google.com/docs/database))
+- Firebase Storage ([docs](https://firebase.google.com/docs/storage))
 
-CONFIGURAÇÕES
-<div align="center">
-<img src="https://user-images.githubusercontent.com/76134992/210416895-b259b87b-c234-4ba7-85dd-e6ef686c4879.jpg" width="700px" />
-</div>
-
-CONTATOS
-<div align="center">
-<img src="https://user-images.githubusercontent.com/76134992/210416898-e5783837-b7c3-43f5-ba22-dfbb7f884641.jpg" width="700px" />
-</div>
-
-CHAT
-<div align="center">
-<img src="https://user-images.githubusercontent.com/76134992/210416887-719782c6-7252-45be-a9f1-e5553d30c53e.jpg" width="700px" />
-</div>
 
 
 # Linguagem de Programação
